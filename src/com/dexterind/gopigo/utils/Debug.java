@@ -103,7 +103,14 @@ public class Debug {
 
     try {
       String configProp = System.getProperty("config") == null ? "default" : System.getProperty("config");
-      input = new FileInputStream(System.getProperty("user.dir") + "/../config/" + configProp + ".properties");
+      String userPropPath = System.getProperty("user.dir") + "/../config/" + configProp + ".properties";
+      File propFile = new File(userPropPath);
+      if(propFile.exists()){
+        input = new FileInputStream(userPropPath);
+      }
+      else {
+        input = getClass().getResourceAsStream("/config/default.properties");
+      }
       prop.load(input);
 
       debug = Boolean.valueOf(prop.getProperty("debug"));
